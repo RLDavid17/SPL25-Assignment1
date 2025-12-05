@@ -53,7 +53,7 @@ void Playlist::remove_track(const std::string& title) {
     }
 
     if (current) {
-        // Remove from linked list_
+        // Remove from linked list
         if (prev) {
             prev->next = current->next;
         } else {

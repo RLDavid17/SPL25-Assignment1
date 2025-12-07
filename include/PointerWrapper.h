@@ -37,7 +37,9 @@ public:
      * Think about ownership and resource management.
      * Is the default destructor sufficient here?
      */
-    ~PointerWrapper() =default;
+    ~PointerWrapper(){
+        delete ptr;
+    } 
 
     // ========== COPY OPERATIONS (DELETED) ==========
 
@@ -60,7 +62,9 @@ public:
      * HINT: How should ownership transfer from one wrapper to another?
      * What should happen to the source wrapper after the move?
      */
-    PointerWrapper(PointerWrapper&& other) noexcept {}
+    PointerWrapper(PointerWrapper&& other) noexcept : ptr(other.ptr) {
+        other.ptr = nullptr;
+    }
 
     /**
      * TODO: Implement move assignment operator
@@ -68,6 +72,11 @@ public:
      * Don't forget about self-assignment!
      */
     PointerWrapper& operator=(PointerWrapper&& other) noexcept {
+        if (this != &other) {
+            delete ptr;         
+            ptr = other.ptr;    
+            other.ptr = nullptr;
+        }
         return *this;
     }
 
@@ -80,8 +89,11 @@ public:
      */
 
     T& operator*() const {
+        if (!ptr) {
+            throw std::runtime_error("PointerWrapper: Null pointer dereference in operator*");
+        }
         return *ptr;
-    };
+    }
 
     /**
      * TODO: Implement arrow operator
@@ -89,7 +101,10 @@ public:
      * What safety checks should you perform?
      */
     T* operator->() const {
-        return nullptr;
+        if (!ptr) {
+            throw std::runtime_error("PointerWrapper: Null pointer access in operator->");
+        }
+        return ptr;
     }
 
     /**
@@ -99,7 +114,10 @@ public:
      * @throws std::runtime_error if ptr is null
      */
     T* get() const {
-        return nullptr; // Placeholder
+        if (!ptr) {
+            throw std::runtime_error("PointerWrapper: Null pointer access in get()");
+        }
+        return ptr;
     }
 
     // ========== OWNERSHIP MANAGEMENT ==========
@@ -110,7 +128,9 @@ public:
      * Should the wrapper still own the pointer after calling release()?
      */
     T* release() {
-        return nullptr;
+        T* temp = ptr;
+        ptr = nullptr;
+        return temp;
     }
 
     /**
@@ -119,6 +139,10 @@ public:
      * What should happen to the old pointer?
      */
     void reset(T* new_ptr = nullptr) {
+        if (ptr != new_ptr) {
+            delete ptr;
+            ptr = new_ptr;
+        }
     }
 
     // ========== UTILITY FUNCTIONS ==========
@@ -129,7 +153,7 @@ public:
      * Why might the explicit keyword be important here?
      */
     explicit operator bool() const {
-        return false; //placeholder
+        return ptr != nullptr;
     }
 
     /**
@@ -143,7 +167,7 @@ public:
 
 // ========== NON-MEMBER FUNCTIONS ==========
 
-/**
+/**ז
  * Helper function to create PointerWrapper
  * This is implemented for you as an example
  * Can you figure out when this would be useful in phase 4?
@@ -163,6 +187,8 @@ void swap(PointerWrapper<T>& lhs, PointerWrapper<T>& rhs) noexcept {
     // TODO: Implement global swap function
     // HINT: You can use the member swap function
     //your code here...
+    lhs.swap(rhs);
+
 }
 
 #endif // POINTERWRAPPER_H

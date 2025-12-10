@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <iostream>
+#include <stdexcept>
 
 /**
  * PointerWrapper - A template class that wraps a raw pointer

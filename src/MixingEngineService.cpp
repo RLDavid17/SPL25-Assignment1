@@ -45,7 +45,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
         return -1;
     }
 
-    int target_deck = 1 - active_deck;
+    size_t target_deck = 1 - active_deck;
     if (decks[0] == nullptr && decks[1] == nullptr) 
         target_deck = 0;
     

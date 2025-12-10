@@ -27,7 +27,7 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>&
     
     std::cout << "TODO: Implement DJLibraryService::buildLibrary method\n"<< library_tracks.size() << " tracks to be loaded into library.\n";
     
-    for (int i = 0; i < library_tracks.size(); i++) {
+    for (size_t i = 0; i < library_tracks.size(); i++) {
         
         auto track = library_tracks[i];
         AudioTrack* new_track = nullptr;

@@ -108,5 +108,7 @@ public:
     int get_duration() const { return duration_seconds; }
     std::vector<std::string> get_artists() const { return artists; }
 
-    void set_bpm(int new_bpm) { bpm = new_bpm; }
+    void set_bpm(int new_bpm) {
+        bpm = new_bpm; 
+    }
 };

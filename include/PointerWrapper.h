@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <iostream>
+#include <stdexcept>
 
 /**
  * PointerWrapper - A template class that wraps a raw pointer
@@ -63,6 +64,7 @@ public:
      * What should happen to the source wrapper after the move?
      */
     PointerWrapper(PointerWrapper&& other) noexcept : ptr(other.ptr) {
+        std::cout << "Move constructor called for: " << &other << std::endl;
         other.ptr = nullptr;
     }
 
@@ -139,6 +141,7 @@ public:
      * What should happen to the old pointer?
      */
     void reset(T* new_ptr = nullptr) {
+        std::cout << "Reset called for pointer: " << ptr << std::endl;
         if (ptr != new_ptr) {
             delete ptr;
             ptr = new_ptr;
